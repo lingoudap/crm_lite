@@ -1,0 +1,304 @@
+/* client/src/components/templates/TemplateBuilder.css */
+.template-builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f5f5f5;
+}
+
+.builder-header {
+  padding: 16px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.builder-tabs {
+  background: white;
+}
+
+.builder-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 16px;
+}
+
+/* Components Panel */
+.components-panel {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.components-panel .MuiListItem-root {
+  transition: all 0.2s ease;
+}
+
+.components-panel .MuiListItem-root:hover {
+  transform: translateX(4px);
+  background: rgba(33, 150, 243, 0.08);
+}
+
+/* Canvas */
+.canvas {
+  position: relative;
+  min-height: 600px;
+}
+
+.canvas.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    #f0f0f0 10px,
+    #f0f0f0 20px
+  );
+}
+
+/* Settings Panel */
+.settings-panel {
+  height: 100%;
+}
+
+.settings-panel .MuiAccordion-root {
+  margin-bottom: 8px;
+  box-shadow: none;
+  border: 1px solid #e0e0e0;
+}
+
+.settings-panel .MuiAccordion-root:before {
+  display: none;
+}
+
+/* Section Editor */
+.section-editor {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 16px;
+  background: white;
+  transition: all 0.2s ease;
+  cursor: move;
+}
+
+.section-editor:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-editor.selected {
+  border-color: #2196F3;
+  background: rgba(33, 150, 243, 0.04);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.section-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-content {
+  min-height: 50px;
+  padding: 8px;
+  border: 1px dashed #e0e0e0;
+  border-radius: 4px;
+}
+
+.section-content[contenteditable="true"] {
+  outline: none;
+  background: #fafafa;
+}
+
+.section-content[contenteditable="true"]:focus {
+  border-color: #2196F3;
+  background: white;
+}
+
+/* Template List */
+.template-list-container {
+  padding: 24px;
+}
+
+.template-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.template-list-filters {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.template-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.template-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.template-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.template-type {
+  display: flex;
+  gap: 8px;
+}
+
+.template-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.template-stats {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.template-card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-top: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+/* Preview Dialog */
+.preview-dialog .MuiDialog-paper {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.preview-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.preview-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  overflow: auto;
+  background: #f0f0f0;
+}
+
+/* Code Editor */
+.code-editor-container {
+  height: 600px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.code-editor-tabs {
+  background: #1e1e1e;
+  border-bottom: 1px solid #333;
+}
+
+.code-editor-content {
+  height: calc(100% - 48px);
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .builder-content .MuiGrid-item {
+    width: 100%;
+  }
+  
+  .template-list-filters .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-section > * {
+    width: 100%;
+  }
+}
+
+/* Drag and Drop */
+.drag-over {
+  border-color: #2196F3;
+  background: rgba(33, 150, 243, 0.1);
+}
+
+.drag-preview {
+  opacity: 0.5;
+  transform: rotate(3deg);
+}
+
+/* Animation */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(33, 150, 243, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
