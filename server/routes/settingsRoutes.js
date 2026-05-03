@@ -26,21 +26,42 @@ router.get("/:type", async (req, res) => {
   }
 });
 
-// ✅ POST — Create or update a setting
+// ✅ POST — Create, update, or add/remove a setting
 router.post("/:type", async (req, res) => {
   try {
-    const { values } = req.body;
-    if (!Array.isArray(values)) {
-      return res.status(400).json({ error: "Values must be an array" });
+    const { values, add, remove } = req.body;
+
+    // Handle add operation
+    if (add) {
+      const updated = await Setting.findOneAndUpdate(
+        { type: req.params.type },
+        { $addToSet: { values: add } },
+        { upsert: true, new: true }
+      );
+      return res.status(200).json(updated);
     }
 
-    const updated = await Setting.findOneAndUpdate(
-      { type: req.params.type },
-      { values },
-      { upsert: true, new: true }
-    );
+    // Handle remove operation
+    if (remove) {
+      const updated = await Setting.findOneAndUpdate(
+        { type: req.params.type },
+        { $pull: { values: remove } },
+        { new: true }
+      );
+      return res.status(200).json(updated);
+    }
 
-    res.status(200).json(updated);
+    // Handle bulk update with values array
+    if (Array.isArray(values)) {
+      const updated = await Setting.findOneAndUpdate(
+        { type: req.params.type },
+        { values },
+        { upsert: true, new: true }
+      );
+      return res.status(200).json(updated);
+    }
+
+    res.status(400).json({ error: "Must provide values, add, or remove" });
   } catch (error) {
     console.error("Error updating setting:", error);
     res.status(500).json({ error: "Failed to update setting" });

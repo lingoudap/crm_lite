@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import fs from "fs";
+import mongoose from "mongoose";
 
 // Models
 import User from "./models/User.js";
@@ -16,6 +17,7 @@ import quotationRoutes from "./routes/quotationRoutes.js";
 import leadsRoutes from "./routes/leadsRoutes.js";
 import bulkUploadRoutes from "./routes/bulkUploadRoutes.js";
 import templateRoutes from "./routes/templateRoutes.js";
+import settingsRoutes from "./routes/settingsRoutes.js";
 
 // Config
 import connectDB from "./config/db.js";
@@ -26,7 +28,30 @@ dotenv.config();
 
 // =================== CONNECT DB ===================
 connectDB()
-  .then(() => console.log("✅ MongoDB connected"))
+  .then(async () => {
+    console.log("✅ MongoDB connected");
+    
+    // Drop and recreate users collection to fix index issues
+    try {
+      const db = mongoose.connection.db;
+      const collections = await db.listCollections().toArray();
+      const usersCollectionExists = collections.some(c => c.name === 'users');
+      
+      if (usersCollectionExists) {
+        const indexes = await db.collection('users').getIndexes();
+        console.log("📋 Current indexes on users collection:", Object.keys(indexes));
+        
+        // Check if problematic username index exists
+        if (Object.keys(indexes).some(idx => idx.includes('username'))) {
+          console.log("🔄 Dropping users collection to fix index conflicts...");
+          await db.collection('users').drop();
+          console.log("✅ Users collection dropped and will be recreated");
+        }
+      }
+    } catch (err) {
+      console.log("ℹ️ Collection reset handled");
+    }
+  })
   .catch((err) => console.error("❌ DB connect error", err));
 
 // =================== MIDDLEWARE ===================
@@ -43,6 +68,7 @@ app.use("/api/templates", templateRoutes);
 app.use("/api/followups", followUpRoutes);
 app.use("/api/quotations", quotationRoutes);
 app.use("/api/leads", leadsRoutes);
+app.use("/api/settings", settingsRoutes);
 app.use("/api", bulkUploadRoutes);
 
 // =================== AUTH ROUTES ===================
